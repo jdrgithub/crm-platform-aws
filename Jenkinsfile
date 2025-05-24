@@ -8,5 +8,13 @@ pipeline {
         sh 'terraform init'
       }
     }
+    
+    stage('Terraform Plan') {
+      steps {
+        dir('terraform') {
+          sh 'terraform plan -out=tfplan'
+        }
+      }
+    }
   }
 }
