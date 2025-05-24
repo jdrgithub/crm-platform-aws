@@ -2,6 +2,18 @@ pipeline {
   agent any 
 
   stages {
+    stage('Check AWS CLI') {
+        steps {
+            sh 'aws --version'
+        }
+    }
+
+    stage('Verify AWS Access') {
+        steps {
+            sh 'aws sts get-caller-identity'
+        }
+    }
+
     stage('Terraform Init') {
       steps {
         dir('terraform') {
