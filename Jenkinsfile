@@ -1,6 +1,6 @@
 pipeline {
   agent {
-    docker {
+    dockerContainer {
       image 'jdrdock/jenkins-terraform'
     }
   }
