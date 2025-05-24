@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker {
+        dockerContainer {
             image 'hashicorp/terraform:light'
             args '-u root'  // Optional, if needed for apt installs
         }
