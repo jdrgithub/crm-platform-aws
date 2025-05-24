@@ -2,6 +2,9 @@ pipeline {
   agent {
     dockerContainer {
       image 'jdrdock/jenkins-terraform'
+      label 'latest'
+      registryUrl 'https://index.docker.io/v1/'
+      registryCredentialsId 'dockerhub-creds'
     }
   }
 
