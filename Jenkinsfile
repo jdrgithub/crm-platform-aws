@@ -1,11 +1,5 @@
 pipeline {
-  agent {
-      docker {
-        image 'jdrdock/jenkins-terraform:latest'
-        registryUrl 'https://index.docker.io/v1/'
-        registryCredentialsId 'dockerhub-creds'
-    }
-  }
+  agent any 
 
   stages {
     stage('Terraform Init') {
