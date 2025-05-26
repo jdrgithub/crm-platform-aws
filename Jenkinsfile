@@ -11,7 +11,7 @@ pipeline {
 
     stage('Export Requirements') {
       steps {
-        sh 'poetry self add poetry-plugin-export || true'
+        sh 'poetry plugin add poetry-plugin-export || true'
         sh 'poetry export -f requirements.txt --without-hashes --output lambda/requirements.txt'
       }
     }
