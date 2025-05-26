@@ -5,7 +5,10 @@ pipeline {
 
     stage('Export Requirements') {
       steps {
-        sh 'poetry export -f requirements.txt --without-hashes --output lambda/requirements.txt'
+        sh '''
+          mkdir -p lambda
+          poetry export -f requirements.txt --without-hashes --output lambda/requirements.txt
+        '''   
       }
     }
 
