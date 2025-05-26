@@ -30,5 +30,13 @@ pipeline {
         }
       }
     }
+
+    stage('Terraform Apply') {
+      steps {
+        dir('terraform') {
+          sh 'terraform apply -auto-approve tfplan'
+        }
+      }
+    }
   }
 }
