@@ -44,7 +44,7 @@ resource "aws_iam_role_policy" "lambda_dynamodb_policy" {
                 Action = [
                     "logs:CreateLogGroup",
                     "logs:CreateLogStream",
-                    "logs:PutLogEvents:"
+                    "logs:PutLogEvents"
                 ]
                 Resource = "arn:aws:logs:*:*:*"
             }
