@@ -3,15 +3,8 @@ pipeline {
 
   stages {
 
-    stage('Install Dependencies') {
-      steps {
-        sh 'poetry install --no-root'
-      }
-    }
-
     stage('Export Requirements') {
       steps {
-        sh 'poetry plugin add poetry-plugin-export || true'
         sh 'poetry export -f requirements.txt --without-hashes --output lambda/requirements.txt'
       }
     }
