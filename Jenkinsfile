@@ -6,8 +6,8 @@ pipeline {
     stage('Export Requirements') {
       steps {
         sh '''
-          mkdir -p lambda
-          poetry export -f requirements.txt --without-hashes --output lambda/requirements.txt
+          mkdir -p build
+          poetry export -f requirements.txt --without-hashes --output build/requirements.txt
         '''   
       }
     }
@@ -16,8 +16,8 @@ pipeline {
       steps {
         sh '''
           mkdir -p lambda_build
-          pip install -r lambda/requirements.txt -t lambda_build/
-          cp lambda/*.py lambda_build/
+          pip install -r build/requirements.txt -t lambda_build/
+          cp src/main.py lambda_build/
           cd lambda_build
           zip -r ../lambda_function.zip .
         '''
