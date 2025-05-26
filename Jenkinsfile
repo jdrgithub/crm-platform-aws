@@ -5,7 +5,7 @@ pipeline {
 
     stage('Install Dependencies') {
       steps {
-        sh 'poetry install'
+        sh 'poetry install --no-root'
       }
     }
 
