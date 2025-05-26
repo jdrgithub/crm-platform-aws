@@ -15,6 +15,7 @@ pipeline {
     stage('Build Lambda Package') {
       steps {
         sh '''
+          rm -rf lambda_build
           mkdir -p lambda_build
           pip install -r build/requirements.txt -t lambda_build/
           cp src/main.py lambda_build/
