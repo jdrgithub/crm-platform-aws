@@ -3,7 +3,7 @@
 from datetime import datetime, timezone
 
 class Contact:
-    def __init__(self, id, name, email, phone, created_at=None):
+    def __init__(self, id=None, name=None, email=None, phone=None, created_at=None):
         """
         Initialization of new contact.
 
