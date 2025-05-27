@@ -17,16 +17,20 @@ pipeline {
         sh '''
           rm -rf lambda_build
           mkdir -p lambda_build/handlers
+          mkdir -p lambda_build/models
+          mkdir -p lambda_build/services
 
           # Copy handler
           cp src/handlers/create_contact.py lambda_build/handlers/
+          cp src/models/contact.py lambda_build/models/
+          cp src/services/dynamodb_service.py lambda_build/services/
 
           # Install dependencies
           pip install -r build/requirements.txt -t lambda_build/
 
           # Create zip inside lambda_build
           cd lambda_build
-          zip -j lambda_function.zip handlers/create_contact.py
+          zip -r lambda_function.zip .
 
           # Move zip to Terraform dir so Terraform can find it
           mv lambda_function.zip ../terraform/lambda_function.zip
