@@ -1,4 +1,5 @@
 import json
+import traceback
 from models.contact import Contact
 from services.dynamodb_service import save_contact
 
@@ -16,6 +17,8 @@ def lambda_handler(event, context):
         }
 
     except Exception as e:
+        print("Lambda error:", str(e))
+        traceback.print_exc()
         return {
             "statusCode": 500,
             "body": f"Internal error: {str(e)}"

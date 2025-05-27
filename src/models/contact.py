@@ -27,7 +27,7 @@ class Contact:
         Returns ->  dict: A dictionary representation of the contact.
         """
         return {
-            "id": self.id,
+            "contact_id": self.id,
             "name": self.name,
             "email": self.email,
             "phone": self.phone,
