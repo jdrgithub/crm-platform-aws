@@ -73,6 +73,7 @@ pipeline {
     stage('Terraform Apply') {
       steps {
         dir('terraform') {
+          sh 'shasum terraform/lambda_function.zip | tee terraform/zip_hash.txt'
           sh 'terraform apply -auto-approve tfplan'
         }
       }
