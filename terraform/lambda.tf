@@ -5,7 +5,7 @@ resource "aws_lambda_function" "crm_handler" {
     runtime         = "python3.12"
 
     filename        = "${path.module}/lambda_function.zip"
-    source_code_hash = filebase64sha256("${path.module}/lambda/lambda_function.zip")
+    source_code_hash = filebase64sha256("${path.module}/lambda_function.zip")
 
     environment {
         variables = {
