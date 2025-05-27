@@ -17,8 +17,9 @@ pipeline {
         sh '''
           rm -rf lambda_build
           mkdir -p lambda_build
+          mkdir -p lambda_build/handlers 
+          cp src/handlers/create_contact.py lambda_build/handlers/
           pip install -r build/requirements.txt -t lambda_build/
-          cp src/main.py lambda_build/
           cd lambda_build
           zip -r ../lambda_function.zip .
         '''
