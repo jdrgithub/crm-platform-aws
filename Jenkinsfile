@@ -84,6 +84,7 @@ pipeline {
       steps {
         sh '''
           echo "API_GATEWAY_URL=$(terraform -chdir=terraform output -raw api_gateway_url)" > .env
+          cat .env
         '''
       }
     }
