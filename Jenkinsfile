@@ -1,6 +1,10 @@
 pipeline {
   agent any
 
+  environment {
+    TF_CLI_ARGS = "-no-color"
+  }
+
   stages {
 
     stage('Export Requirements') {
