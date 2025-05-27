@@ -13,6 +13,7 @@ import pytest
 )
 def test_post_contacts():
     url = os.getenv("API_GATEWAY_URL")
-    response = requests.post(url)
+    assert url is not None
+    response = requests.post(url, json={"name": "Alice", "email": "alice@example.com"})
     assert response.status_code == 200
     assert "Hello from CRM Lambda" in response.text
