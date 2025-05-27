@@ -1,6 +1,6 @@
 # src/models/contact.py
 
-from datetime import datetime
+from datetime import datetime, timezone
 
 class Contact:
     def __init__(self, id, name, email, phone, created_at=None):

@@ -20,7 +20,7 @@ pipeline {
           mkdir -p lambda_build/models
           mkdir -p lambda_build/services
 
-          # Copy handler
+          # Copy src directories
           cp src/handlers/create_contact.py lambda_build/handlers/
           cp src/models/contact.py lambda_build/models/
           cp src/services/dynamodb_service.py lambda_build/services/
