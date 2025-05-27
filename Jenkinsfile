@@ -21,7 +21,7 @@ pipeline {
           cp src/handlers/create_contact.py lambda_build/handlers/
           pip install -r build/requirements.txt -t lambda_build/
           cd lambda_build
-          zip -j ../lambda_function.zip lambda_build/create_contact.py
+          zip -j lambda_function.zip handlers/create_contact.py
         '''
       }
     }
