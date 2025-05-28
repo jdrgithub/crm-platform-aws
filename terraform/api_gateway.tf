@@ -40,7 +40,7 @@ resource "aws_api_gateway_deployment" "crm_api_deploy" {
     stage_name  = var.environment
 }
 
-resource "aws_api_gateway_method" "get_contact" {
+resource "aws_api_gateway_method" "get_contacts" {
     rest_api_id     = aws_api_gateway_rest_api.crm_api.id
     resource_id     = aws_api_gateway_resource.contacts.id
     http_method     = "GET"
