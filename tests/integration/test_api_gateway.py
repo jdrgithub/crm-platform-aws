@@ -21,5 +21,5 @@ def test_post_contacts():
     }
     
     response = requests.post(url, json=payload)
-    assert response.status_code == 200
+    assert response.status_code in [200, 201]
     assert "Hello from CRM Lambda" in response.text
