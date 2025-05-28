@@ -21,7 +21,7 @@ resource "aws_lambda_function" "crm_handler" {
 }
 
 resource "aws_lambda_function" "get_contacts" {
-    function_name   = "${var.project_name}.get_contacts"
+    function_name   = "${var.project_name}-get_contacts"
     runtime         = "python3.12"
     filename        = "${path.module}/lambda_function.zip"
     source_code_hash = filebase64sha256("${path.module}/lambda_function.zip")
