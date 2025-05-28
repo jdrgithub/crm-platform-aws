@@ -1,6 +1,7 @@
 # src/models/contact.py 
 
 from datetime import datetime, timezone
+import uuid
 
 class Contact:
     def __init__(self, contact_id=None, name=None, email=None, phone=None, created_at=None):
@@ -14,7 +15,7 @@ class Contact:
             phone (str): phone #
             created_at (datetime, optional): creation timestamp
         """
-        self.contact_id = contact_id
+        self.contact_id = contact_id or str(uuid.uuid4()) # fallback if missing
         self.name = name
         self.email = email
         self.phone = phone
