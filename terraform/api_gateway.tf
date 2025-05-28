@@ -37,7 +37,12 @@ resource "aws_lambda_permission" "allow_apigw" {
 resource "aws_api_gateway_deployment" "crm_api_deploy" {
     depends_on  = [aws_api_gateway_integration.lambda_post, aws_api_gateway_integration.lambda_get]
     rest_api_id = aws_api_gateway_rest_api.crm_api.id
-    stage_name  = var.environment
+}
+
+resource "aws_api_gateway_stage" "crm_stage" {
+    rest_api_id = aws_api_gateway_rest_api.crm_api.id
+    stage_name      = var.environment
+    deployment_id   = aws_api_gateway_deployment.crm_api_deploy.id
 }
 
 resource "aws_api_gateway_method" "get_contacts" {
