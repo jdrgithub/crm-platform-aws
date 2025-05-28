@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRM Contact Viewer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2em;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.5em;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>Contact Viewer</h1>
+  <table id="contacts-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Created At</th>
+        <th>Phone</th>
+      </tr>
+    </thead>
+    <tbody id="contacts-body">
+      <!-- Rows to be injected -->
+    </tbody>
+  </table>
+
+  <script>
+    const endpoint = "https://mn3vl1gj67.execute-api.us-east-1.amazonaws.com/dev/contacts";
+
+    fetch(endpoint)
+      .then(response => response.json())
+      .then(data => {
+        const tbody = document.getElementById("contacts-body");
+        data.forEach(contact => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${contact.name || ""}</td> 
+            <td>${contact.email || ""}</td>
+            <td>${contact.created_at || ""}</td>
+            <td>${contact.phone || ""}</td>
+          `;
+          tbody.appendChild(row);
+        });
+      })
+      .catch(err => {
+        document.body.innerHTML += `<p style="color:red">Error loading contacts: ${err}</p>`;
+        console.error("Failed to load contacts:", err);
+      });
+  </script>
+</body>
+
+</html>

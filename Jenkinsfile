@@ -79,9 +79,12 @@ pipeline {
       }
     }
 
-    stage('Terraform Deploy') {
+    stage('Upload Frontend') {
       steps {
-        sh 'terraform -chdir=terraform apply -auto-approve'
+        sh '''
+          echo "Uploading index.html to S3..."
+          aws s3 cp frontend/index.html s3://crm-platform-frontend/bucket/index.html --acl public-read --content-type text/html
+        '''
       }
     }
 
