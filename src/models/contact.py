@@ -3,7 +3,7 @@
 from datetime import datetime, timezone
 
 class Contact:
-    def __init__(self, id=None, name=None, email=None, phone=None, created_at=None):
+    def __init__(self, contact_id=None, name=None, email=None, phone=None, created_at=None):
         """
         Initialization of new contact.
 
@@ -14,7 +14,7 @@ class Contact:
             phone (str): phone #
             created_at (datetime, optional): creation timestamp
         """
-        self.id = id
+        self.contact_id = contact_id
         self.name = name
         self.email = email
         self.phone = phone
@@ -27,7 +27,7 @@ class Contact:
         Returns ->  dict: A dictionary representation of the contact.
         """
         return {
-            "contact_id": self.id,
+            "contact_id": self.contact_id,
             "name": self.name,
             "email": self.email,
             "phone": self.phone,
