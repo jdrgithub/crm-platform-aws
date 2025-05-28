@@ -19,3 +19,18 @@ resource "aws_lambda_function" "crm_handler" {
         Environment = var.environment
     }
 }
+
+resource "aws_lambda_function" "get_contacts" {
+    runtime         = "python3.12"
+    filename        = "${path.module}/../lambda_build/get_contacts.zip"
+    source_code_hash = filebase64sha256("${path.module}/../lambda_build/get_contacts.zip")
+    handler         = "handlers.get_contacts.lambda_handler"
+    role            = aws_iam_role.lambda_exec_role.arn
+    timeout         = 10
+
+    environment {
+        variables = {
+            DYNAMODB_TABLE = aws_dynamodb_table.crm_contacts.name
+        }
+    }
+}
