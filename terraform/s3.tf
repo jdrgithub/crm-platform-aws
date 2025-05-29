@@ -31,6 +31,15 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "crm_data_sse" {
 
 resource "aws_s3_bucket" "frontend" {
   bucket = "${var.project_name}-frontend-bucket"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+
+  tags = {
+    Name        = "Frontend Bucket"
+    Environment = var.environment
+  }
 }
 
 resource "aws_s3_bucket_website_configuration" "frontend" {
