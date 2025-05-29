@@ -34,4 +34,10 @@ resource "aws_lambda_function" "get_contacts" {
             DYNAMODB_TABLE = aws_dynamodb_table.crm_contacts.name
         }
     }
+
+    tags = {
+       Name        = "CRM Lambda GetContacts"
+       Environment = var.environment
+    }
+
 }

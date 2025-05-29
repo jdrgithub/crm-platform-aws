@@ -7,6 +7,12 @@ pipeline {
 
   stages {
 
+    stage('Run Unit Tests') {
+      steps {
+        sh 'poetry run pytest tests/unit'
+      }
+    }
+
     stage('Export Requirements') {
       steps {
         sh '''
@@ -43,18 +49,6 @@ pipeline {
       }
     }
 
-    stage('Check AWS CLI') {
-      steps {
-        sh 'aws --version'
-      }
-    }
-
-    stage('Verify AWS Access') {
-      steps {
-        sh 'aws sts get-caller-identity'
-      }
-    }
-
     stage('Terraform Init') {
       steps {
         dir('terraform') {
@@ -79,11 +73,23 @@ pipeline {
       }
     }
 
+    stage('Fetch Bucket Name') {
+      steps {
+        dir('terraform') {
+          script {
+            def output = sh(script: "terraform output -json", returnStdout: true).trim()
+            def parsed = readJSON text: output
+            env.FRONTEND_BUCKET = parsed.frontend_bucket.value
+          }
+        }
+      }
+    }
+
     stage('Upload Frontend') {
       steps {
         sh '''
           echo "Uploading index.html to S3..."
-          aws s3 cp frontend/index.html s3://crm-platform-frontend-bucket/index.html --content-type text/html
+          aws s3 cp frontend/index.html s3://$FRONTEND_BUCKET/index.html --content-type text/html
         '''
       }
     }
@@ -97,11 +103,6 @@ pipeline {
       }
     }
 
-    stage('Run Unit Tests') {
-      steps {
-        sh 'poetry run pytest tests/unit'
-      }
-    }
 
     stage('Run Integration Tests') {
       steps {

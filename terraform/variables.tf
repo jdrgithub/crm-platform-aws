@@ -19,4 +19,5 @@ variable "environment" {
 variable "frontend_origin" {
   type        = string
   description = "Allowed origin for CORS"
+  default     = "https://crm-platform-frontend-bucket.s3.amazonaws.com"
 }
