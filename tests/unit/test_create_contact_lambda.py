@@ -43,3 +43,58 @@ def test_lambda_handler_bad_json():
     response = lambda_handler(event, None)
     assert response["statusCode"] == 500
     assert "Internal error" in response["body"]
+
+# Validate missing name and email
+def test_lambda_handler_missing_required_fields():
+    event = {
+        "httpMethod": "POST",
+        "body": json.dumps({
+            "phone": "123-456-7890"
+        })
+    }
+
+    response = lambda_handler(event, None)
+    assert response["statusCode"] == 500
+    assert "Internal error" in response["body"]
+    
+# Validate date format in last_contacted
+def test_lambda_handler_invalid_last_contacted():
+    event = {
+        "httpMethod": "POST",
+        "body": json.dumps({
+            "name": "Test",
+            "email": "test@example.com",
+            "last_contacted": "not-a-date"
+        })
+    }
+
+    with patch("handlers.create_contact.save_contact") as mock_save:
+        response = lambda_handler(event, None)
+        body = json.loads(response["body"])
+
+        assert response["statusCode"] == 201
+        assert body["last_contacted"] is None
+        mock_save.assert_called_once()
+        
+# Validate date in next_follow_up
+def test_lambda_handler_invalid_next_follow_up():
+    event = {
+        "httpMethod": "POST",
+        "body": json.dumps({
+            "name": "Test",
+            "email": "test@example.com",
+            "next_follow_up": "May 5, 2025"
+        })
+    }
+
+    with patch("handlers.create_contact.save_contact") as mock_save:
+        response = lambda_handler(event, None)
+        body = json.loads(response["body"])
+
+        assert response["statusCode"] == 201
+        assert body["next_follow_up"] is None
+        mock_save.assert_called_once()
+
+ 
+
+
