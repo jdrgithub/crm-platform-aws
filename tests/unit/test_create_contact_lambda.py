@@ -54,7 +54,7 @@ def test_lambda_handler_missing_required_fields():
     }
 
     response = lambda_handler(event, None)
-    assert response["statusCode"] == 500
+    assert response["statusCode"] == 400
     assert "Internal error" in response["body"]
     
 # Validate date format in last_contacted
