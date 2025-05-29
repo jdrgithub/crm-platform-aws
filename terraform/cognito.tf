@@ -18,8 +18,16 @@ resource "aws_iam_role" "unauthenticated_role" {
       },
       Action = "sts:AssumeroleWithWebIdentity"
       Condition = {
+        # aud -> Audience -> intended recipient of a token
+        # Ensures only tokens issued for id pool can assume role
         StringEquals = {
           "cognito-identity.amazonaws.com:aud" = aws_cognito_identity_pool.demo_pool.id
+        }
+        # amr -> Authentication Method Reference -> how identity authed 
+        # Filters based on how id is authed -> unauthed = guest users
+        # stringlike allows multiple values 
+        "ForAnyValue:StringLike" = {
+          "cognito-identity.amazonaws.com:amr" = "unauthenticated"
         }
       }
     }]
