@@ -83,7 +83,7 @@ pipeline {
       steps {
         sh '''
           echo "Uploading index.html to S3..."
-          aws s3 cp frontend/index.html s3://crm-platform-frontend/bucket/index.html --content-type text/html
+          aws s3 cp frontend/index.html s3://crm-platform-frontend-bucket/index.html --acl public-read --content-type text/html
         '''
       }
     }
