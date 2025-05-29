@@ -16,7 +16,7 @@ resource "aws_iam_role" "unauthenticated_role" {
       Principal = {
         Federated = "cognito-identity.amazonaws.com"
       },
-      Action = "sts:AssumeroleWithWebIdentity"
+      Action = "sts:AssumeRoleWithWebIdentity"
       Condition = {
         # aud -> Audience -> intended recipient of a token
         # Ensures only tokens issued for id pool can assume role
