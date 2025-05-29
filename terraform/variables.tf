@@ -15,3 +15,8 @@ variable "environment" {
     type        = string
     default     = "dev"
 }
+
+variable "frontend_origin" {
+  type        = string
+  description = "Allowed origin for CORS"
+}

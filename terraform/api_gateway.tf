@@ -52,6 +52,21 @@ resource "aws_api_gateway_method" "get_contacts" {
     authorization   = "NONE"
 }
 
+resource "aws_api_gateway_method_response" "get_200" {
+    rest_api_id = aws_api_gateway_rest_api.crm_api.id
+    resource_id = aws_api_gateway_resource.contacts.id
+    http_method = "GET"
+    status_code = "200"
+
+    response_models = {
+        "application/json" = "application/json"
+    }
+
+    response_parameters = {
+      "method.response.header.Access-Control-Allow-Origin" = true
+    }
+}
+
 resource "aws_api_gateway_integration" "lambda_get" {
     rest_api_id             = aws_api_gateway_rest_api.crm_api.id
     resource_id             = aws_api_gateway_resource.contacts.id
@@ -60,6 +75,17 @@ resource "aws_api_gateway_integration" "lambda_get" {
     type                    = "AWS_PROXY"
     uri                     = aws_lambda_function.get_contacts.invoke_arn
 
+}
+
+resource "aws_api_gateway_integration_response" "get_200" {
+    rest_api_id = aws_api_gateway_rest_api.crm_api.id
+    resource_id = aws_api_gateway_resource.contacts.id
+    http_method = "GET"
+    status_code = aws_api_gateway_method_response.get_200.status_code 
+
+    response_parameters = {
+      "method.response.header.Access-Control-Allow-Origin" = "\"${var.frontend_origin}\""
+    }
 }
 
 resource "aws_lambda_permission" "allow_apigw_get" {

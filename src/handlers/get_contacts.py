@@ -16,7 +16,10 @@ def lambda_handler(event, context):
             "statusCode": 200,
             "body": json.dumps(contacts),
             "headers": {
-                "Content-Type": "application/json"
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET,POST,OPTIONS",
+                "Access-Control-Allow-Headers": "*"
             }
         }
     except Exception as e:
