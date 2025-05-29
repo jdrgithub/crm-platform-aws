@@ -22,11 +22,6 @@ resource "aws_iam_role" "unauthenticated_role" {
           "cognito-identity.amazonaws.com:aud" = aws_cognito_identity_pool.demo_pool.id
         }
       }
-      
-
-    }
-    }
-  }
-    
-  )
+    }]
+  })
 }
