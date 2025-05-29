@@ -11,7 +11,7 @@ resource "aws_iam_role" "unauthenticated_role" {
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
-    Statement = {{
+    Statement = [{
       Effect = "Allow",
       Principal = {
         Federated = "cognito-identity.amazonaws.com"
@@ -23,7 +23,9 @@ resource "aws_iam_role" "unauthenticated_role" {
         }
       }
       
-    }}
+
+    }
+    }
   }
     
   )
