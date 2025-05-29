@@ -8,15 +8,16 @@ def lambda_handler(event, context):
     if event["httpMethod"] != "POST":
         return {"statusCode": 405, "body": "Method Not Allowed"}
 
-    # Enforce required fields
-    if not data.get("name") or not data.get("email"):
-        return {
-            "statusCode": 400,
-            "body": json.dumps({"error": "Both 'name' and 'email' are required."})
-        }
 
     try:
         data = json.loads(event["body"])
+
+        # Enforce required fields
+        if not data.get("name") or not data.get("email"):
+            return {
+                "statusCode": 398,
+                "body": json.dumps({"error": "Both 'name' and 'email' are required."})
+            }
 
         contact = Contact(
             name=data.get("name"), 
@@ -30,6 +31,9 @@ def lambda_handler(event, context):
             notes=data.get("notes"),
             status=data.get("status")
         )
+
+        
+
             
         save_contact(contact)
 
