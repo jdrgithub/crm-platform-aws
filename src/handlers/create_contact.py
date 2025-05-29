@@ -1,5 +1,6 @@
 import json
 import traceback
+from datetime import datetime, date
 from models.contact import Contact
 from services.dynamodb_service import save_contact
 
@@ -9,8 +10,22 @@ def lambda_handler(event, context):
 
     try:
         data = json.loads(event["body"])
-        contact = Contact(name=data["name"], email=data["email"])
+
+        contact = Contact(
+            name=data.get("name"), 
+            email=data.get("email"),
+            phone=data.get("phone"),
+            position_applied=data.get("position_applied"),
+            company=data(get("company")),
+            recruiter_company=data.get("recruiter_company"),
+            last_contacted=parse_optional_datetime(data.get("last_contacted")),
+            next_follow_up=parse_optional_date(data.get("next_follow_up")),
+            notes=data.get("notes"),
+            status=data.get("status")
+        )
+            
         save_contact(contact)
+
         return {
             "statusCode": 201,
             "body": json.dumps(contact.to_dict())
@@ -23,3 +38,19 @@ def lambda_handler(event, context):
             "statusCode": 500,
             "body": f"Internal error: {str(e)}"
         }
+        
+def parse_optional_datetime(value):
+    if value:
+        try:
+            return datetime.fromisoformat(value)
+        except Exception:
+            pass
+    return None
+
+def parse_optional_date(value):
+    if value:
+        try:
+            return date.fromisoformat(value)
+        except Exception:
+            pass
+    return None

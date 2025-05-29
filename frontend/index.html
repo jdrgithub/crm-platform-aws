@@ -28,8 +28,14 @@
       <tr>
         <th>Name</th>
         <th>Email</th>
-        <th>Created At</th>
         <th>Phone</th>
+        <th>Position Applied</th>
+        <th>Recruiter Company</th>
+        <th>Last Contacted</th>
+        <th>Next Follow-up</th>
+        <th>Status</th>
+        <th>Notes</th>
+        <th>Created At</th>
       </tr>
     </thead>
     <tbody id="contacts-body">
@@ -47,10 +53,16 @@
         data.forEach(contact => {
           const row = document.createElement("tr");
           row.innerHTML = `
-            <td>${contact.name || ""}</td> 
+            <td>${contact.name || ""}</td>
             <td>${contact.email || ""}</td>
-            <td>${contact.created_at || ""}</td>
             <td>${contact.phone || ""}</td>
+            <td>${contact.position_applied || ""}</td>
+            <td>${contact.recruiter_company || ""}</td>
+            <td>${contact.last_contacted || ""}</td>
+            <td>${contact.next_follow_up || ""}</td>
+            <td>${contact.status || ""}</td>
+            <td>${contact.notes || ""}</td>
+            <td>${contact.created_at || ""}</td>
           `;
           tbody.appendChild(row);
         });
@@ -61,5 +73,4 @@
       });
   </script>
 </body>
-
 </html>
