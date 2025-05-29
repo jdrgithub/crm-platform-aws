@@ -80,7 +80,7 @@ resource "aws_api_gateway_integration_response" "get_200" {
     status_code = aws_api_gateway_method_response.get_200.status_code 
 
     response_parameters = {
-      "method.response.header.Access-Control-Allow-Origin" = "\"${var.frontend_origin}\""
+      "method.response.header.Access-Control-Allow-Origin" = "'${var.frontend_origin}'"
     }
 }
 
