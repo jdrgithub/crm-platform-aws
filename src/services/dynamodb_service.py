@@ -2,8 +2,8 @@
 import boto3
 import os
 
-dynamodb = boto3.resource("dynamodb")
-table = dynamodb.Table(os.environ["DYNAMODB_TABLE"])
-
 def save_contact(contact):
+    dynamodb = boto3.resource("dynamodb")
+    table_name = os.environ.get("DYNAMODB_TABLE", "Contacts")
+    table = dynamodb.Table(table_name)
     table.put_item(Item=contact.to_dict())
