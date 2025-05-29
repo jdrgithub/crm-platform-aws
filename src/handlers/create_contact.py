@@ -15,7 +15,7 @@ def lambda_handler(event, context):
         # Enforce required fields
         if not data.get("name") or not data.get("email"):
             return {
-                "statusCode": 398,
+                "statusCode": 400,
                 "body": json.dumps({"error": "Both 'name' and 'email' are required."})
             }
 
