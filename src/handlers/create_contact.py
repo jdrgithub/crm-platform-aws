@@ -16,7 +16,7 @@ def lambda_handler(event, context):
             email=data.get("email"),
             phone=data.get("phone"),
             position_applied=data.get("position_applied"),
-            company=data(get("company")),
+            company=data.get("company"),
             recruiter_company=data.get("recruiter_company"),
             last_contacted=parse_optional_datetime(data.get("last_contacted")),
             next_follow_up=parse_optional_date(data.get("next_follow_up")),
