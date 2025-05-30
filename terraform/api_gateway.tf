@@ -133,6 +133,9 @@ resource "aws_api_gateway_deployment" "crm_api_deploy" {
     aws_api_gateway_integration.options_contacts
   ]
   rest_api_id = aws_api_gateway_rest_api.crm_api.id
+
+  # Change this timestamp to force a new deployment
+  description = "Forced redeploy at ${timestamp()}"
 }
 
 resource "aws_api_gateway_stage" "crm_stage" {
