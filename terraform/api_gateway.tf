@@ -16,6 +16,58 @@ resource "aws_api_gateway_method" "options_contacts" {
   authorization = "NONE"
 }
 
+resource "aws_api_gateway_method" "delete_contact" {
+  rest_api_id   = aws_api_gateway_rest_api.crm_api.id
+  resource_id   = aws_api_gateway_resource.contacts.id
+  http_method   = "DELETE"
+  authorization = "NONE"
+}
+
+# Adding mock integration to satisfy preflight check
+resource "aws_api_gateway_integration" "delete_mock" {
+  rest_api_id             = aws_api_gateway_rest_api.crm_api.id
+  resource_id             = aws_api_gateway_resource.contacts.id
+  http_method             = aws_api_gateway_method.delete_contact.http_method
+  type                    = "MOCK"
+  integration_http_method = "DELETE"
+
+  request_templates = {
+    "application/json" = <<EOF
+{
+  "statusCode": 200
+}
+EOF
+  }
+}
+
+resource "aws_api_gateway_method_response" "delete_200" {
+  rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  resource_id = aws_api_gateway_resource.contacts.id
+  http_method = aws_api_gateway_method.delete_contact.http_method
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin" = true
+  }
+}
+
+resource "aws_api_gateway_integration_response" "delete_200" {
+  rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  resource_id = aws_api_gateway_resource.contacts.id
+  http_method = aws_api_gateway_method.delete_contact.http_method
+  status_code = aws_api_gateway_method_response.delete_200.status_code
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Origin" = "'${var.frontend_origin}'"
+  }
+
+  response_templates = {
+    "application/json" = ""
+  }
+}
+
+# MOCK integration requires method and integration responses
+# to define -> expected status code AND CORS headers
 resource "aws_api_gateway_method_response" "options_200" {
   rest_api_id = aws_api_gateway_rest_api.crm_api.id
   resource_id = aws_api_gateway_resource.contacts.id
@@ -49,7 +101,7 @@ resource "aws_api_gateway_integration_response" "options_200" {
   depends_on = [
     aws_api_gateway_integration.options_contacts
   ]
-  
+
   rest_api_id = aws_api_gateway_rest_api.crm_api.id
   resource_id = aws_api_gateway_resource.contacts.id
   http_method = "OPTIONS"
