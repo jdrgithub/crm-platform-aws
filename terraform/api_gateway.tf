@@ -266,10 +266,3 @@ resource "aws_api_gateway_stage" "crm_stage" {
   stage_name    = var.environment
   deployment_id = aws_api_gateway_deployment.crm_api_deploy.id
 }
-
-resource "aws_api_gateway_resource" "contact_id" {
-  rest_api_id = aws_api_gateway_rest_api.crm_api.id
-  parent_id   = aws_api_gateway_resource.contacts.id
-  path_part   = "{contact_id}"
-}
-
