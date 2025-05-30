@@ -1,106 +1,48 @@
-resource "aws_api_gateway_rest_api" "crm_api" {
-    name        = "${var.project_name}-api"
-    description = "Public API for CRM Lambda"
-}
+ir (hide)
+Running in /var/jenkins_home/workspace/crm-platform-aws_main/terraform
+[Pipeline] {
+[Pipeline] sh
++ terraform plan -out=tfplan
 
-resource "aws_api_gateway_resource" "contacts" {
-    rest_api_id = aws_api_gateway_rest_api.crm_api.id
-    parent_id   = aws_api_gateway_rest_api.crm_api.root_resource_id
-    path_part   = "contacts"
-}
+Error: Reference to undeclared resource
 
-resource "aws_api_gateway_method" "post_contact" {
-    rest_api_id     = aws_api_gateway_rest_api.crm_api.id
-    resource_id     = aws_api_gateway_resource.contacts.id
-    http_method     = "POST"
-    authorization   = "NONE"
-}
+  on api_gateway.tf line 26, in resource "aws_api_gateway_integration" "lambda_post":
+  26:     uri                     = aws_lambda_function.crm_handler.invoke_arn
 
-resource "aws_api_gateway_integration" "lambda_post" {
-    rest_api_id = aws_api_gateway_rest_api.crm_api.id
-    resource_id = aws_api_gateway_resource.contacts.id
-    http_method = aws_api_gateway_method.post_contact.http_method
+A managed resource "aws_lambda_function" "crm_handler" has not been declared
+in the root module.
 
-    integration_http_method = "POST"
-    type                    = "AWS_PROXY"
-    uri                     = aws_lambda_function.crm_handler.invoke_arn
-}
+Error: Reference to undeclared resource
 
-resource "aws_lambda_permission" "allow_apigw" {
-    statement_id    = "AllowAPIGatewayInvoke"
-    action          = "lambda:InvokeFunction"
-    function_name   = aws_lambda_function.crm_handler.function_name
-    principal       = "apigateway.amazonaws.com"
-    source_arn      = "${aws_api_gateway_rest_api.crm_api.execution_arn}/*/*"
-}
+  on api_gateway.tf line 32, in resource "aws_lambda_permission" "allow_apigw":
+  32:     function_name   = aws_lambda_function.crm_handler.function_name
 
-resource "aws_api_gateway_deployment" "crm_api_deploy" {
-    depends_on  = [aws_api_gateway_integration.lambda_post, aws_api_gateway_integration.lambda_get]
-    rest_api_id = aws_api_gateway_rest_api.crm_api.id
-}
+A managed resource "aws_lambda_function" "crm_handler" has not been declared
+in the root module.
 
-resource "aws_api_gateway_stage" "crm_stage" {
-    rest_api_id = aws_api_gateway_rest_api.crm_api.id
-    stage_name      = var.environment
-    deployment_id   = aws_api_gateway_deployment.crm_api_deploy.id
-}
+Error: Reference to undeclared resource
 
-resource "aws_api_gateway_method" "get_contacts" {
-    rest_api_id     = aws_api_gateway_rest_api.crm_api.id
-    resource_id     = aws_api_gateway_resource.contacts.id
-    http_method     = "GET"
-    authorization   = "NONE"
-}
+  on api_gateway.tf line 72, in resource "aws_api_gateway_integration" "lambda_get":
+  72:     uri                     = aws_lambda_function.get_contacts.invoke_arn
 
-resource "aws_api_gateway_method_response" "get_200" {
-    rest_api_id = aws_api_gateway_rest_api.crm_api.id
-    resource_id = aws_api_gateway_resource.contacts.id
-    http_method = "GET"
-    status_code = "200"
+A managed resource "aws_lambda_function" "get_contacts" has not been declared
+in the root module.
 
-    response_parameters = {
-      "method.response.header.Access-Control-Allow-Origin" = true
-    }
-}
+Error: Reference to undeclared resource
 
-resource "aws_api_gateway_integration" "lambda_get" {
-    rest_api_id             = aws_api_gateway_rest_api.crm_api.id
-    resource_id             = aws_api_gateway_resource.contacts.id
-    http_method             = aws_api_gateway_method.get_contacts.http_method
-    integration_http_method = "POST"
-    type                    = "AWS_PROXY"
-    uri                     = aws_lambda_function.get_contacts.invoke_arn
+  on api_gateway.tf line 90, in resource "aws_lambda_permission" "allow_apigw_get":
+  90:     function_name   = aws_lambda_function.get_contacts.function_name
 
-}
+A managed resource "aws_lambda_function" "get_contacts" has not been declared
+in the root module.
 
-resource "aws_api_gateway_integration_response" "get_200" {
-    rest_api_id = aws_api_gateway_rest_api.crm_api.id
-    resource_id = aws_api_gateway_resource.contacts.id
-    http_method = "GET"
-    status_code = aws_api_gateway_method_response.get_200.status_code 
+Error: Reference to undeclared resource
 
-    response_parameters = {
-      "method.response.header.Access-Control-Allow-Origin" = "'${var.frontend_origin}'"
-    }
-}
+  on api_gateway.tf line 102, in resource "aws_apigatewayv2_integration" "cors":
+ 102:   api_id             = aws_apigatewayv2_api.crm_api.id
 
-resource "aws_lambda_permission" "allow_apigw_get" {
-    statement_id    = "AllowAPIGatewayInvokeGet"
-    action          = "lambda:InvokeFunction"
-    function_name   = aws_lambda_function.get_contacts.function_name
-    principal       = "apigateway.amazonaws.com"
-    source_arn      = "${aws_api_gateway_rest_api.crm_api.execution_arn}/*/*"
-}
-
-resource "aws_apigatewayv2_route" "options_contacts_id" {
-  api_id    = aws_apigatewayv2_api.crm_api.id
-  route_key = "OPTIONS /contacts/{contact_id}"
-  target    = "integrations/${aws_apigatewayv2_integration.cors.id}"
-}
-
-resource "aws_apigatewayv2_integration" "cors" {
-  api_id             = aws_apigatewayv2_api.crm_api.id
-  integration_type   = "MOCK"
-  integration_method = "OPTIONS"
-  payload_format_version = "1.0"
-}
+A managed resource "aws_apigatewayv2_api" "crm_api" has not been declared in
+the root module.
+[Pipeline] }
+[Pipeline] // dir
+[Pipeline] }
