@@ -22,57 +22,6 @@
   </style>
 </head>
 <body>
-  <h1>Contact Viewer</h1>
-  <table id="contacts-table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Position Applied</th>
-        <th>Recruiter Company</th>
-        <th>Last Contacted</th>
-        <th>Next Follow-up</th>
-        <th>Status</th>
-        <th>Notes</th>
-        <th>Created At</th>
-      </tr>
-    </thead>
-    <tbody id="contacts-body">
-      <!-- Rows will be injected here -->
-    </tbody>
-  </table>
-
-  <!-- AWS SDK and scripts -->
-  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1562.0.min.js"></script>
-  <script src="aws-auth.js"></script>
-  <script src="app.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>CRM Contact Viewer</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 2em;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 0.5em;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
-</head>
-<body>
   <h2>Add New Contact</h2>
   <form id="contact-form">
     <label>Name: <input type="text" name="name" required></label><br>
