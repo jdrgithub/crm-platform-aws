@@ -41,3 +41,24 @@ resource "aws_lambda_function" "get_contacts" {
     }
 
 }
+
+resource "aws_lambda_function" "delete_contact" {
+  function_name   = "${var.project_name}-delete_contact"
+  runtime         = "python3.12"
+  filename        = "${path.module}/lambda_function.zip"
+  source_code_hash = filebase64sha256("${path.module}/lambda_function.zip")
+  handler         = "handlers.delete_contact.lambda_handler"
+  role            = aws_iam_role.lambda_exec_role.arn
+  timeout         = 10
+
+  environment {
+    variables = {
+      DYNAMODB_TABLE = aws_dynamodb_table.crm_contacts.name
+    }
+  }
+
+  tags = {
+    Name        = "CRM Lambda DeleteContact"
+    Environment = var.environment
+  }
+}

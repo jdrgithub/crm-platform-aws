@@ -141,7 +141,7 @@ resource "aws_api_gateway_integration" "lambda_delete" {
   http_method             = aws_api_gateway_method.delete_contact.http_method
   integration_http_method = "POST"
   type                    = "AWS_PROXY"
-  uri                     = aws_lambda_function.crm_handler.invoke_arn
+  uri                     = aws_lambda_function.delete_contact.invoke_arn
 }
 
 # Method response for successful DELETE operations
