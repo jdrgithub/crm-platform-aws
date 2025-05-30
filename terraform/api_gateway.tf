@@ -1,48 +1,53 @@
-ir (hide)
-Running in /var/jenkins_home/workspace/crm-platform-aws_main/terraform
-[Pipeline] {
-[Pipeline] sh
-+ terraform plan -out=tfplan
+# Create the nested resource: /contacts/{contact_id}
+resource "aws_api_gateway_resource" "contact_id" {
+  rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  parent_id   = aws_api_gateway_resource.contacts.id
+  path_part   = "{contact_id}"
+}
 
-Error: Reference to undeclared resource
+# Define the OPTIONS method (CORS preflight support)
+resource "aws_api_gateway_method" "options_contact_id" {
+  rest_api_id   = aws_api_gateway_rest_api.crm_api.id
+  resource_id   = aws_api_gateway_resource.contact_id.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
 
-  on api_gateway.tf line 26, in resource "aws_api_gateway_integration" "lambda_post":
-  26:     uri                     = aws_lambda_function.crm_handler.invoke_arn
+# Use MOCK integration to simulate a CORS response
+resource "aws_api_gateway_integration" "options_contact_id" {
+  rest_api_id             = aws_api_gateway_rest_api.crm_api.id
+  resource_id             = aws_api_gateway_resource.contact_id.id
+  http_method             = aws_api_gateway_method.options_contact_id.http_method
+  type                    = "MOCK"
+  request_templates       = {
+    "application/json" = "{\"statusCode\": 200}"
+  }
+}
 
-A managed resource "aws_lambda_function" "crm_handler" has not been declared
-in the root module.
+# Method response headers to expose in browser
+resource "aws_api_gateway_method_response" "options_200" {
+  rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  resource_id = aws_api_gateway_resource.contact_id.id
+  http_method = "OPTIONS"
+  status_code = "200"
 
-Error: Reference to undeclared resource
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true
+    "method.response.header.Access-Control-Allow-Methods" = true
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
 
-  on api_gateway.tf line 32, in resource "aws_lambda_permission" "allow_apigw":
-  32:     function_name   = aws_lambda_function.crm_handler.function_name
+# Integration response: what values to return for those headers
+resource "aws_api_gateway_integration_response" "options_200" {
+  rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  resource_id = aws_api_gateway_resource.contact_id.id
+  http_method = "OPTIONS"
+  status_code = aws_api_gateway_method_response.options_200.status_code
 
-A managed resource "aws_lambda_function" "crm_handler" has not been declared
-in the root module.
-
-Error: Reference to undeclared resource
-
-  on api_gateway.tf line 72, in resource "aws_api_gateway_integration" "lambda_get":
-  72:     uri                     = aws_lambda_function.get_contacts.invoke_arn
-
-A managed resource "aws_lambda_function" "get_contacts" has not been declared
-in the root module.
-
-Error: Reference to undeclared resource
-
-  on api_gateway.tf line 90, in resource "aws_lambda_permission" "allow_apigw_get":
-  90:     function_name   = aws_lambda_function.get_contacts.function_name
-
-A managed resource "aws_lambda_function" "get_contacts" has not been declared
-in the root module.
-
-Error: Reference to undeclared resource
-
-  on api_gateway.tf line 102, in resource "aws_apigatewayv2_integration" "cors":
- 102:   api_id             = aws_apigatewayv2_api.crm_api.id
-
-A managed resource "aws_apigatewayv2_api" "crm_api" has not been declared in
-the root module.
-[Pipeline] }
-[Pipeline] // dir
-[Pipeline] }
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type'"
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,PUT,DELETE,OPTIONS'"
+    "method.response.header.Access-Control-Allow-Origin"  = "'${var.frontend_origin}'"
+  }
+}
