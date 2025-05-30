@@ -18,7 +18,7 @@ resource "aws_api_gateway_method" "options_contacts" {
 
 resource "aws_api_gateway_method" "delete_contact" {
   rest_api_id   = aws_api_gateway_rest_api.crm_api.id
-  resource_id   = aws_api_gateway_resource.contacts.id
+  resource_id   = aws_api_gateway_resource.contact_id.id
   http_method   = "DELETE"
   authorization = "NONE"
 }
@@ -26,7 +26,7 @@ resource "aws_api_gateway_method" "delete_contact" {
 # Adding mock integration to satisfy preflight check
 resource "aws_api_gateway_integration" "delete_mock" {
   rest_api_id             = aws_api_gateway_rest_api.crm_api.id
-  resource_id             = aws_api_gateway_resource.contacts.id
+  resource_id = aws_api_gateway_resource.contact_id.id
   http_method             = aws_api_gateway_method.delete_contact.http_method
   type                    = "MOCK"
   integration_http_method = "DELETE"
@@ -42,7 +42,7 @@ EOF
 
 resource "aws_api_gateway_method_response" "delete_200" {
   rest_api_id = aws_api_gateway_rest_api.crm_api.id
-  resource_id = aws_api_gateway_resource.contacts.id
+  resource_id = aws_api_gateway_resource.contact_id.id
   http_method = aws_api_gateway_method.delete_contact.http_method
   status_code = "200"
 
@@ -53,7 +53,7 @@ resource "aws_api_gateway_method_response" "delete_200" {
 
 resource "aws_api_gateway_integration_response" "delete_200" {
   rest_api_id = aws_api_gateway_rest_api.crm_api.id
-  resource_id = aws_api_gateway_resource.contacts.id
+  resource_id = aws_api_gateway_resource.contact_id.id
   http_method = aws_api_gateway_method.delete_contact.http_method
   status_code = aws_api_gateway_method_response.delete_200.status_code
 
@@ -177,7 +177,7 @@ resource "aws_api_gateway_integration_response" "get_200" {
   status_code = aws_api_gateway_method_response.get_200.status_code
 
   response_parameters = {
-    "method.response.header.Access-Control-Allow-Origin" = "\"${var.frontend_origin}\""
+    "method.response.header.Access-Control-Allow-Origin" = "'${var.frontend_origin}'"
   }
 }
 
@@ -206,3 +206,10 @@ resource "aws_api_gateway_stage" "crm_stage" {
   stage_name    = var.environment
   deployment_id = aws_api_gateway_deployment.crm_api_deploy.id
 }
+
+resource "aws_api_gateway_resource" "contact_id" {
+  rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  parent_id   = aws_api_gateway_resource.contacts.id
+  path_part   = "{contact_id}"
+}
+
