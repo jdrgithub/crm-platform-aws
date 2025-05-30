@@ -1,5 +1,54 @@
 
 ---
+# Serverless Contact Tracker (CRM)
+
+This is a serverless customer relationship management (CRM) system designed to help users track contacts, recruiter conversations, job applications, follow-ups, and status updates. It consists of a frontend web application and a serverless backend deployed to AWS using Terraform and Jenkins.
+
+This project was built as a personal tool to manage job search communication efficiently, and is structured with modularity, automation, and cloud-native principles in mind.
+
+## Features
+
+### Cloud-Native and Serverless by Design
+- Deployed entirely on AWS Lambda, API Gateway, DynamoDB, Cognito, and S3.
+- No servers, containers, or ongoing infrastructure management required.
+- Supports full CRUD (Create, Read, Update, Delete) operations on contact data using Lambda functions and RESTful API Gateway routes.
+
+### Real-Time Contact Tracking for Job Search or CRM Use
+- Tracks detailed information about each contact, including name, email, phone, company, recruiter firm, position applied for, last contact date, next follow-up, notes, and status.
+- Designed specifically to support job seekers managing recruiter outreach, interviews, and follow-ups in one place.
+- Dynamically updates and renders the contact list directly in the browser.
+
+### Clean, Validated Frontend Interface
+- Static frontend served via S3 with lightweight HTML, JavaScript, and CSS.
+- Real-time contact form validation powered by JustValidate.
+- Responsive UI with dynamic table rendering, inline editing, and delete functionality.
+
+### REST API Architecture with API Gateway (AWS_PROXY)
+- Each API route is implemented as an AWS Lambda function and invoked through API Gateway using proxy integration.
+- CORS configuration is handled directly in Lambda responses, allowing secure cross-origin calls from the browser.
+- JSON-formatted responses and status codes follow standard HTTP conventions.
+
+### Modular and Maintainable Python Codebase
+- Contact data model implemented with a Python class for clean serialization and timestamp handling.
+- Each Lambda handler (create, get, delete) is kept separate and modular for clarity and scalability.
+- DynamoDB interactions abstracted into a service layer, keeping database logic isolated.
+
+### Fully Automated CI/CD Pipeline
+- Jenkins pipeline runs locally on a private Ubuntu server in a Docker container.
+- Lambda functions are automatically packaged from source, zipped, and deployed using Terraform.
+- Terraform applies changes idempotently and tracks infrastructure state, with only the S3 bucket protected from destruction.
+
+### Browser-Based Auth with AWS Cognito
+- Uses an AWS Cognito Identity Pool with unauthenticated guest access to provide temporary credentials for browser-based API requests.
+- No hardcoded credentials or public API keys exposed in the frontend.
+- All AWS SDK requests are signed securely using Cognito-issued temporary credentials.
+
+### Reproducible and Cost-Efficient
+- Designed to work entirely within the AWS Free Tier for personal use or experimentation.
+- Infrastructure can be torn down and rebuilt automatically, with only persistent S3 assets retained.
+- Works without relying on any managed container platforms or long-running compute resources.
+
+---
 
 ## Deployment Model
 
