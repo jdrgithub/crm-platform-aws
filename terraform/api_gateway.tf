@@ -46,6 +46,10 @@ EOF
 }
 
 resource "aws_api_gateway_integration_response" "options_200" {
+  depends_on = [
+    aws_api_gateway_integration.options_contacts
+  ]
+  
   rest_api_id = aws_api_gateway_rest_api.crm_api.id
   resource_id = aws_api_gateway_resource.contacts.id
   http_method = "OPTIONS"
