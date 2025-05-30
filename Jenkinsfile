@@ -31,7 +31,7 @@ pipeline {
           mkdir -p lambda_build/services
 
           # Copy src directories
-          cp src/handlers/delete_contactpy lambda_build/handlers/
+          cp src/handlers/delete_contact.py lambda_build/handlers/
           cp src/handlers/create_contact.py lambda_build/handlers/
           cp src/handlers/get_contacts.py lambda_build/handlers/
           cp src/models/contact.py lambda_build/models/
