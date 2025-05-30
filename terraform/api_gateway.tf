@@ -144,12 +144,6 @@ resource "aws_api_gateway_integration" "lambda_delete" {
   uri                     = aws_lambda_function.delete_contact.invoke_arn
 }
 
-# Method response for successful DELETE operations
-# REMOVED – not needed for AWS_PROXY
-
-# Integration response for DELETE operations
-# REMOVED – not needed for AWS_PROXY
-
 resource "aws_api_gateway_method" "post_contact" {
   rest_api_id   = aws_api_gateway_rest_api.crm_api.id
   resource_id   = aws_api_gateway_resource.contacts.id
@@ -166,12 +160,6 @@ resource "aws_api_gateway_integration" "lambda_post" {
   uri                     = aws_lambda_function.crm_handler.invoke_arn
 }
 
-# Method response for successful POST operations
-# REMOVED – not needed for AWS_PROXY
-
-# Integration response for POST operations
-# REMOVED – not needed for AWS_PROXY
-
 resource "aws_api_gateway_method" "get_contacts" {
   rest_api_id   = aws_api_gateway_rest_api.crm_api.id
   resource_id   = aws_api_gateway_resource.contacts.id
@@ -187,12 +175,6 @@ resource "aws_api_gateway_integration" "lambda_get" {
   type                    = "AWS_PROXY"
   uri                     = aws_lambda_function.get_contacts.invoke_arn
 }
-
-# Method response for successful GET operations
-# REMOVED – not needed for AWS_PROXY
-
-# Integration response for GET operations
-# REMOVED – not needed for AWS_PROXY
 
 # =============================================================================
 # LAMBDA PERMISSIONS
@@ -212,6 +194,15 @@ resource "aws_lambda_permission" "allow_apigw_get" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_api_gateway_rest_api.crm_api.execution_arn}/*/*"
 }
+
+resource "aws_lambda_permission" "allow_api_gateway_delete" {
+  statement_id  = "AllowExecutionFromAPIGatewayDelete"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.delete_contact.function_name
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_api_gateway_rest_api.crm_api.execution_arn}/*/DELETE/contacts/*"
+}
+
 
 # =============================================================================
 # DEPLOYMENT + STAGE
