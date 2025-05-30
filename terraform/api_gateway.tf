@@ -9,6 +9,66 @@ resource "aws_api_gateway_resource" "contacts" {
   path_part   = "contacts"
 }
 
+resource "aws_api_gateway_resource" "contact_id" {
+  rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  parent_id   = aws_api_gateway_resource.contacts.id
+  path_part   = "{contact_id}"
+}
+
+resource "aws_api_gateway_method" "options_contact_id" {
+  rest_api_id   = aws_api_gateway_rest_api.crm_api.id
+  resource_id   = aws_api_gateway_resource.contact_id.id
+  http_method   = "OPTIONS"
+  authorization = "NONE"
+}
+
+resource "aws_api_gateway_method_response" "options_contact_id_200" {
+  rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  resource_id = aws_api_gateway_resource.contact_id.id
+  http_method = "OPTIONS"
+  status_code = "200"
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = true,
+    "method.response.header.Access-Control-Allow-Methods" = true,
+    "method.response.header.Access-Control-Allow-Origin"  = true
+  }
+}
+
+resource "aws_api_gateway_integration" "options_contact_id" {
+  rest_api_id             = aws_api_gateway_rest_api.crm_api.id
+  resource_id             = aws_api_gateway_resource.contact_id.id
+  http_method             = "OPTIONS"
+  type                    = "MOCK"
+  integration_http_method = "OPTIONS"
+
+  request_templates = {
+    "application/json" = <<EOF
+{
+  "statusCode": 200
+}
+EOF
+  }
+}
+
+resource "aws_api_gateway_integration_response" "options_contact_id_200" {
+  depends_on  = [aws_api_gateway_integration.options_contact_id]
+  rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  resource_id = aws_api_gateway_resource.contact_id.id
+  http_method = "OPTIONS"
+  status_code = aws_api_gateway_method_response.options_contact_id_200.status_code
+
+  response_parameters = {
+    "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+    "method.response.header.Access-Control-Allow-Methods" = "'GET,POST,OPTIONS,DELETE'",
+    "method.response.header.Access-Control-Allow-Origin"  = "'${var.frontend_origin}'"
+  }
+
+  response_templates = {
+    "application/json" = ""
+  }
+}
+
 resource "aws_api_gateway_method" "options_contacts" {
   rest_api_id   = aws_api_gateway_rest_api.crm_api.id
   resource_id   = aws_api_gateway_resource.contacts.id
