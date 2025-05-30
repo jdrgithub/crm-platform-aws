@@ -39,38 +39,64 @@
       </tr>
     </thead>
     <tbody id="contacts-body">
-      <!-- Rows to be injected -->
+      <!-- Rows will be injected here -->
     </tbody>
   </table>
 
-  <script>
-    const endpoint = "https://mn3vl1gj67.execute-api.us-east-1.amazonaws.com/dev/contacts";
+  <!-- AWS SDK and scripts -->
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1562.0.min.js"></script>
+  <script src="aws-auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRM Contact Viewer</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2em;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 0.5em;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+  <h1>Contact Viewer</h1>
+  <table id="contacts-table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Position Applied</th>
+        <th>Recruiter Company</th>
+        <th>Last Contacted</th>
+        <th>Next Follow-up</th>
+        <th>Status</th>
+        <th>Notes</th>
+        <th>Created At</th>
+      </tr>
+    </thead>
+    <tbody id="contacts-body">
+      <!-- Rows will be injected here -->
+    </tbody>
+  </table>
 
-    fetch(endpoint)
-      .then(response => response.json())
-      .then(data => {
-        const tbody = document.getElementById("contacts-body");
-        data.forEach(contact => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${contact.name || ""}</td>
-            <td>${contact.email || ""}</td>
-            <td>${contact.phone || ""}</td>
-            <td>${contact.position_applied || ""}</td>
-            <td>${contact.recruiter_company || ""}</td>
-            <td>${contact.last_contacted || ""}</td>
-            <td>${contact.next_follow_up || ""}</td>
-            <td>${contact.status || ""}</td>
-            <td>${contact.notes || ""}</td>
-            <td>${contact.created_at || ""}</td>
-          `;
-          tbody.appendChild(row);
-        });
-      })
-      .catch(err => {
-        document.body.innerHTML += `<p style="color:red">Error loading contacts: ${err}</p>`;
-        console.error("Failed to load contacts:", err);
-      });
-  </script>
+  <!-- AWS SDK and scripts -->
+  <script src="https://sdk.amazonaws.com/js/aws-sdk-2.1562.0.min.js"></script>
+  <script src="aws-auth.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
