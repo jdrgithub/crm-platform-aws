@@ -242,7 +242,8 @@ resource "aws_api_gateway_deployment" "crm_api_deploy" {
       aws_api_gateway_integration.options_contact_id.id,
       aws_api_gateway_integration.lambda_get.id,
       aws_api_gateway_integration.lambda_post.id,
-      aws_api_gateway_integration.lambda_delete.id
+      aws_api_gateway_integration.lambda_delete.id,
+      "force-redeploy-${timestamp()}"
     ]))
   }
 
