@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="https://unpkg.com/just-validate@4.3.0/dist/just-validate.production.min.js"></script>
   <meta charset="UTF-8">
   <title>CRM Contact Viewer</title>
   <style>
@@ -24,6 +25,7 @@
 <body>
   <h2>Add New Contact</h2>
   <form id="contact-form">
+    <input type="hidden" name="contact_id" id="contact-id">
     <label>Name: <input type="text" name="name" required></label><br>
     <label>Email: <input type="email" name="email" required></label><br>
     <label>Phone: <input type="text" name="phone"></label><br>
