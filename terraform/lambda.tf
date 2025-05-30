@@ -99,6 +99,7 @@ resource "aws_api_gateway_deployment" "crm_api_deploy" {
   ]
   
   rest_api_id = aws_api_gateway_rest_api.crm_api.id
+  stage_name  = "dev" 
 
   triggers = {
     redeployment = sha1(jsonencode([
