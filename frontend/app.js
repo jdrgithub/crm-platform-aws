@@ -1,20 +1,12 @@
-// app.js
-
 const endpoint = "https://mn3vl1gj67.execute-api.us-east-1.amazonaws.com/dev/contacts";
 
-/**
- * Loads contacts from the API Gateway endpoint and populates the table
- */
+// Load contacts on page load
 function loadContacts() {
   fetch(endpoint)
-    .then(response => {
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      return response.json();
-    })
+    .then(response => response.json())
     .then(data => {
       const tbody = document.getElementById("contacts-body");
-      tbody.innerHTML = ""; // Clear any existing rows
-
+      tbody.innerHTML = ""; // Clear existing rows
       data.forEach(contact => {
         const row = document.createElement("tr");
         row.innerHTML = `
@@ -38,7 +30,37 @@ function loadContacts() {
     });
 }
 
-// Authenticate with Cognito and load data after credentials are ready
-initializeAwsGuestAuth().then(() => {
+document.addEventListener("DOMContentLoaded", () => {
   loadContacts();
+
+  const form = document.getElementById("contact-form");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+    const contact = Object.fromEntries(formData.entries());
+
+    try {
+      const creds = await getAWSTemporaryCredentials();
+
+      const res = await fetch(endpoint, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Amz-Date": creds.timestamp,
+          Authorization: creds.authHeader,
+          "X-Amz-Security-Token": creds.sessionToken
+        },
+        body: JSON.stringify(contact)
+      });
+
+      if (!res.ok) throw new Error(await res.text());
+
+      form.reset();
+      loadContacts();
+    } catch (err) {
+      alert("Error submitting contact: " + err.message);
+      console.error("POST error:", err);
+    }
+  });
 });
