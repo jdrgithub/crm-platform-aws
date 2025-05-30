@@ -253,7 +253,9 @@ resource "aws_api_gateway_deployment" "crm_api_deploy" {
   depends_on  = [
     aws_api_gateway_integration.lambda_post,
     aws_api_gateway_integration.lambda_get,
-    aws_api_gateway_integration.options_contacts
+    aws_api_gateway_integration.options_contacts,
+    aws_api_gateway_integration.options_contact_id,
+    aws_api_gateway_method.options_contact_id          
   ]
   rest_api_id = aws_api_gateway_rest_api.crm_api.id
 
