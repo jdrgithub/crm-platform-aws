@@ -48,8 +48,8 @@ EOF
 resource "aws_api_gateway_integration_response" "options_200" {
   rest_api_id = aws_api_gateway_rest_api.crm_api.id
   resource_id = aws_api_gateway_resource.contacts.id
-  http_method = aws_api_gateway_method.options_contacts.http_method
-  status_code = "200"
+  http_method = "OPTIONS"
+  status_code = aws_api_gateway_method_response.options_200.status_code
 
   response_parameters = {
     "method.response.header.Access-Control-Allow-Headers" = "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
