@@ -91,3 +91,16 @@ resource "aws_lambda_permission" "allow_apigw_get" {
     principal       = "apigateway.amazonaws.com"
     source_arn      = "${aws_api_gateway_rest_api.crm_api.execution_arn}/*/*"
 }
+
+resource "aws_apigatewayv2_route" "options_contacts_id" {
+  api_id    = aws_apigatewayv2_api.crm_api.id
+  route_key = "OPTIONS /contacts/{contact_id}"
+  target    = "integrations/${aws_apigatewayv2_integration.cors.id}"
+}
+
+resource "aws_apigatewayv2_integration" "cors" {
+  api_id             = aws_apigatewayv2_api.crm_api.id
+  integration_type   = "MOCK"
+  integration_method = "OPTIONS"
+  payload_format_version = "1.0"
+}
