@@ -64,6 +64,19 @@
   textarea {
     resize: vertical;
   }
+
+  .form-row {
+    display: flex;
+    gap: 1em;
+    margin-top: 1em;
+  }
+
+  .form-row > div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
 </style>
 
 </head>
@@ -71,15 +84,68 @@
   <h2>Add New Contact</h2>
   <form id="contact-form">
     <input type="hidden" name="contact_id" id="contact-id">
-    <label>Name: <input type="text" name="name" required></label><br>
-    <label>Email: <input type="email" name="email" required></label><br>
-    <label>Phone: <input type="text" name="phone"></label><br>
-    <label>Position Applied: <input type="text" name="position_applied"></label><br>
-    <label>Recruiter Company: <input type="text" name="recruiter_company"></label><br>
-    <label>Last Contacted: <input type="date" name="last_contacted"></label><br>
-    <label>Next Follow-up: <input type="date" name="next_follow_up"></label><br>
-    <label>Status: <input type="text" name="status"></label><br>
-    <label>Notes: <textarea name="notes"></textarea></label><br>
+
+    <!-- Row 1 -->
+    <div class="form-row">
+      <div>
+        <label>Name:
+          <input type="text" name="name" required>
+        </label>
+      </div>
+      <div>
+        <label>Email:
+          <input type="email" name="email" required>
+        </label>
+      </div>
+      <div>
+        <label>Phone:
+          <input type="text" name="phone">
+        </label>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="form-row">
+      <div>
+        <label>Position Applied:
+          <input type="text" name="position_applied">
+        </label>
+      </div>
+      <div>
+        <label>Recruiter Company:
+          <input type="text" name="recruiter_company">
+        </label>
+      </div>
+      <div>
+        <label>Status:
+          <input type="text" name="status">
+        </label>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="form-row">
+      <div>
+        <label>Last Contacted:
+          <input type="date" name="last_contacted">
+        </label>
+      </div>
+      <div>
+        <label>Next Follow-up:
+          <input type="date" name="next_follow_up">
+        </label>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="form-row">
+      <div style="flex: 1">
+        <label>Notes:
+          <textarea name="notes"></textarea>
+        </label>
+      </div>
+    </div>
+
     <button type="submit">Add Contact</button>
   </form>
 
