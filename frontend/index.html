@@ -4,23 +4,68 @@
   <script src="https://unpkg.com/just-validate@4.3.0/dist/just-validate.production.min.js"></script>
   <meta charset="UTF-8">
   <title>CRM Contact Viewer</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 2em;
-    }
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 0.5em;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
+
+<style>
+  body {
+    font-family: "Roboto", sans-serif;
+    background-color: #fafafa;
+    margin: 2em;
+  }
+
+  label {
+    display: block;
+    margin-top: 0.8em;
+    font-weight: bold;
+  }
+
+  input, textarea {
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 0.3em;
+  }
+
+  button {
+    margin-top: 1em;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    padding: 0.6em 1.2em;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background-color: #1976d2;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    margin-top: 2em;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 0.75em;
+    text-align: left;
+  }
+
+  th {
+    background-color: #eeeeee;
+    font-weight: bold;
+  }
+
+  textarea {
+    resize: vertical;
+  }
+</style>
+
 </head>
 <body>
   <h2>Add New Contact</h2>
